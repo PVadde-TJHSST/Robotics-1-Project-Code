@@ -28,10 +28,10 @@ void setup() {
   topRight.attach(TRpin);
   botLeft.attach(BLpin);
   botRight.attach(BRpin);
-  
+
   setMotorPulse();
   setMotorThreshold();
-    
+
 }
 
 void loop() {
@@ -44,7 +44,7 @@ void loop() {
   delay(1000);
   hTranslate(-255);
   delay(1000);
-  
+
 }
 
 void vTranslate(int power) {
@@ -86,15 +86,15 @@ void setMotorPulse() {
   topLeft.setMinPulse(minP);
   topLeft.setNeutralPulse(neuP);
   topLeft.setMaxPulse(maxP);
-  
+
   topRight.setMinPulse(minP);
   topRight.setNeutralPulse(neuP);
   topRight.setMaxPulse(maxP);
-  
+
   botLeft.setMinPulse(minP);
   botLeft.setNeutralPulse(neuP);
   botLeft.setMaxPulse(maxP);
-  
+
   botRight.setMinPulse(minP);
   botRight.setNeutralPulse(neuP);
   botRight.setMaxPulse(maxP);
