@@ -8,10 +8,10 @@ vexMotor topRight;
 vexMotor botLeft;
 vexMotor botRight;
 
-const int TLpin = 9;
-const int TRpin = 10;
-const int BLpin = 11;
-const int BRpin = 13;
+const int TLpin = 9; //White
+const int TRpin = 10; //Blue
+const int BLpin = 11; //Yellow
+const int BRpin = 13; //Pink
 
 const int minP = 1000;
 const int neuP = 1500;
@@ -36,29 +36,15 @@ void setup() {
 
 void loop() {
 
-  vTranslate(255);
-  delay(1000);
-  hTranslate(255);
-  delay(1000);
-  vTranslate(-255);
-  delay(1000);
-  hTranslate(-255);
-  delay(1000);
+  
   
 }
 
-void vTranslate(int power) {
-  topLeft.write(power);
-  topRight.write(power);
-  botLeft.write(power);
-  botRight.write(power);
-}
-
-void hTranslate(int power) {
-  topLeft.write(power);
-  topRight.write(-power);
-  botLeft.write(-power);
-  botRight.write(power);
+void move(int x, int y, int r) {
+  topLeft.write(x + y + r);
+  topRight.write(x - y - r);
+  botLeft.write(x - y + r);
+  botRight.write(x + y - r);
 }
 
 void halt() {
@@ -66,13 +52,6 @@ void halt() {
   topRight.write(0);
   botLeft.write(0);
   botRight.write(0);
-}
-
-void rotate(int power) {
-  topLeft.write(power);
-  topRight.write(-power);
-  botLeft.write(power);
-  botRight.write(-power);
 }
 
 void setMotorThreshold() {
