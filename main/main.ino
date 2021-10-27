@@ -36,8 +36,25 @@ void setup() {
 
 void loop() {
 
+  figure8Test(50);
   
-  
+}
+
+void figure8Test(int t) {
+  moveTime(0, 255, 0, t);
+  moveTime(255, 0, 0, t);
+  moveTime(0, -255, 0, t);
+  moveTime(-255, 0, 0, t);
+  moveTime(0, -255, 0, t);
+  moveTime(255, 0, 0, t);
+  moveTime(0, 255, 0, t);
+  moveTime(-255, 0, 0, t);
+}
+
+void moveTime(int x, int y, int r, int milli) {
+  move(x, y, r);
+  delay(milli);
+  halt();
 }
 
 void move(int x, int y, int r) {
