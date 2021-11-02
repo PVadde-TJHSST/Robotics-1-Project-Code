@@ -22,6 +22,11 @@ const int ThreshTR = 5;
 const int ThreshBL = 5;
 const int ThreshBR = 5;
 
+String XbeeIn;
+int contX = 255;
+int contY = 255;
+int contR = 255;
+
 void setup() {
 
   topLeft.attach(TLpin);
@@ -32,11 +37,15 @@ void setup() {
   setMotorPulse();
   setMotorThreshold();
 
+  Serial1.begin(57600);
+  Serial.begin(57600);
+
 }
 
 void loop() {
 
-  
+  readXbee();
+  move(contX, contY, contR);
   
 }
 
@@ -94,4 +103,11 @@ void setMotorPulse() {
   botRight.setMinPulse(minP);
   botRight.setNeutralPulse(neuP);
   botRight.setMaxPulse(maxP);
+}
+
+void readXbee() {
+  if (Serial1.available()) {
+    XbeeIn = Serial1.read();
+  }
+  Serial.println(XbeeIn);
 }

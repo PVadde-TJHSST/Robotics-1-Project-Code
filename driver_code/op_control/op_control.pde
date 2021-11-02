@@ -7,69 +7,99 @@ import org.firmata.*;
 
 ControlDevice cont;
 ControlIO control;
-Arduino arduino;
+//Arduino arduino;
 float x;
 float y;
 float r;
 
-int TL = 0;
-int TR = 0;
-int BL = 0;
-int BR = 0;
+float deadzone = 0.1;
+
+ControlSlider xSlider;
+ControlSlider ySlider;
+//ControlSlider rSlider;
+ControlHat hat;
+
+int TL;
+int TR;
+int BL;
+int BR;
 
 Serial port;
 
 void setup() {
   
-  //println(Serial.list());
-  port = new Serial(this, Serial.list()[0], 57600);
+  println(Serial.list());
+  port = new Serial(this, Serial.list()[1], 57600);
   
   size(360, 200);
-  control = ControlIO.getInstance(this);
-  cont = control.getMatchedDevice("xbox_cont_config");
-  if (cont == null) {
-    println("Controller is Null.");
-    System.exit(-1);
-  }
   
-  arduino = new Arduino(this, Arduino.list()[0], 57600);
-  arduino.pinMode(10, Arduino.SERVO);
+  contSetup();
+  
+  //arduino = new Arduino(this, Arduino.list()[0], 57600);
+  //arduino.pinMode(10, Arduino.SERVO);
    
 }
 
 void draw() {
   getUserInput();
-  background(x, 100, 255);
-  background(y, 100, 255);
-  background(r, 100, 255);
-  
-  //arduino.topLeft.write(x + y + r);
-  //arduino.topRight.write(x - y - r);
-  //arduino.botLeft.write(x - y + r);
-  //arduino.botRight.write(x + y - r);
-  //arduino.servoWrite(TL, (int)(x + y + r));
-  //arduino.servoWrite(TR, (int)(x - y - r));
-  //arduino.servoWrite(BL, (int)(x - y + r));
-  //arduino.servoWrite(BR, (int)(x + y - r));
-  //arduino.move((int)x, (int)y, (int)r);
-  
+  //background(x, 100, 255);
+  //background(y, 100, 255);
+  //background(r, 100, 255);
   write();
-  
+  delay(10);
 }
 
 public void getUserInput() {
-  x = map(cont.getSlider("thumbX").getValue(), -1, 1, -255, 255);
-  y = map(cont.getSlider("thumbY").getValue(), -1, 1, -255, 255);
-  r = map(cont.getSlider("leftThumbR").getValue(), -1, 1, -255, 255);
+  x = xSlider.getValue();
+  y = ySlider.getValue();
+  //r = rSlider.getValue();
+  r = hat.getX() * 255.0;
 }
 
 public void write() {
-  port.write(Float.toString(x));
-  port.write('.');
+  TL = int(x + y + r);
+  TR = int(x - y - r);
+  BL = int(x - y + r);
+  BR = int(x + y - r);
   
-  port.write(Float.toString(y));
-  port.write('-');
+  port.write(str(TL));
+  port.write('/');
   
-  port.write(Float.toString(r));
-  port.write('-');
+  port.write(str(TR));
+  port.write('/');
+  
+  port.write(str(BL));
+  port.write('/');
+  
+  port.write(str(BR));
+  port.write("\n");
+}
+
+void contSetup() {
+  control = ControlIO.getInstance(this);
+  //cont = control.getMatchedDevice("PVDesktopContConfig");
+  cont = control.filter(GCP.GAMEPAD).getDevice("Stadia Controller");
+  if (cont == null) {
+    println("Controller is Null.");
+    System.exit(-1);
+  }
+  
+  xSlider = cont.getSlider("Z Axis");
+  ySlider = cont.getSlider("Z Rotation");
+  //rSlider = cont.getSlider("X Axis");
+  hat = cont.getHat("cooliehat: Hat Switch");
+  
+  xSlider.setMultiplier(255.0);
+  ySlider.setMultiplier(-255.0);
+  //rSlider.setMultiplier(255.0);
+  println("x multiplier: " + xSlider.getMultiplier());
+  println("y multiplier: " + ySlider.getMultiplier());
+  //println("r multiplier: " + rSlider.getMultiplier());
+  
+  xSlider.setTolerance(deadzone);
+  ySlider.setTolerance(deadzone);
+  //rSlider.setTolerance(deadzone);
+  println("x tolerance: " + xSlider.getTolerance());
+  println("y tolerance: " + ySlider.getTolerance());
+  //println("r tolerance: " + rSlider.getTolerance());
 }
