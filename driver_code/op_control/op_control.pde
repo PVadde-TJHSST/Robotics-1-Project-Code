@@ -53,7 +53,7 @@ public void getUserInput() {
   x = xSlider.getValue();
   y = ySlider.getValue();
   //r = rSlider.getValue();
-  r = hat.getX() * 255.0;
+  r = hat.getX();
 }
 
 public void write() {
@@ -63,13 +63,13 @@ public void write() {
   BR = int(x + y - r);
   
   port.write(str(TL));
-  port.write('/');
+  port.write(' ');
   
   port.write(str(TR));
-  port.write('/');
+  port.write(' ');
   
   port.write(str(BL));
-  port.write('/');
+  port.write(' ');
   
   port.write(str(BR));
   port.write("\n");
@@ -92,9 +92,11 @@ void contSetup() {
   xSlider.setMultiplier(255.0);
   ySlider.setMultiplier(-255.0);
   //rSlider.setMultiplier(255.0);
+  hat.setMultiplier(255.0);
   println("x multiplier: " + xSlider.getMultiplier());
   println("y multiplier: " + ySlider.getMultiplier());
   //println("r multiplier: " + rSlider.getMultiplier());
+  println("r multiplier: " + hat.getMultiplier());
   
   xSlider.setTolerance(deadzone);
   ySlider.setTolerance(deadzone);
