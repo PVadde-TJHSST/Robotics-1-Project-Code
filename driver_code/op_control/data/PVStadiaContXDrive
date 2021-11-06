@@ -1,4 +1,0 @@
-X Drive controller
-x	x translation	3	SLIDER	Z Axis	0	1.0	0.001
-y	y translation	3	SLIDER	Z Rotation	0	-1.0	0.001
-r	rotation	3	SLIDER	X Axis	0	1.0	0.001

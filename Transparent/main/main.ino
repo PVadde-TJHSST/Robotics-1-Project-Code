@@ -22,7 +22,8 @@ const int ThreshTR = 5;
 const int ThreshBL = 5;
 const int ThreshBR = 5;
 
-String XbeeIn;
+String XBeeIn;
+
 int contX = 255;
 int contY = 255;
 int contR = 255;
@@ -37,16 +38,13 @@ void setup() {
   setMotorPulse();
   setMotorThreshold();
 
-  Serial1.begin(57600);
   Serial.begin(57600);
 
 }
 
 void loop() {
-
-  readXbee();
+  readXBee();
   move(contX, contY, contR);
-  
 }
 
 //void figure8Test(int t) {
@@ -105,9 +103,27 @@ void setMotorPulse() {
   botRight.setMaxPulse(maxP);
 }
 
-void readXbee() {
-  if (Serial1.available()) {
-    XbeeIn = Serial1.read();
+void readXBee() {
+  if (Serial.available() > 0) {
+    XBeeIn = Serial.readStringUntil('@');
+    int c = 1;
+    for (int i = XBeeIn.indexOf("/"); i != -1; i = XBeeIn.indexOf("/")) {
+      s: switch (c) {
+        case 1:
+          contX = XBee.substring(0, i).toInt();
+          break s;
+        case 2:
+          contY = XBee.substring(0, i).toInt();
+          break s;
+        case 3:
+          contR = XBee.substring(0, i).toInt();
+          break s;
+        default:
+          break s;
+      }
+      c++;
+      XBeeIn = XBeeIn.substring(i);
+    }
   }
-  Serial.println(XbeeIn);
+  
 }

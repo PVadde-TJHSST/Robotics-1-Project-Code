@@ -2,7 +2,7 @@ import processing.serial.*;
 import net.java.games.input.*;
 import org.gamecontrolplus.*;
 import org.gamecontrolplus.gui.*;
-//import cc.arduino.*;
+import cc.arduino.*;
 import org.firmata.*;
 
 ControlDevice cont;
@@ -19,22 +19,17 @@ ControlSlider ySlider;
 //ControlSlider rSlider;
 ControlHat hat;
 
-String TL;
-String TR;
-String BL;
-String BR;
-//byte[] hexArr;
+int TL;
+int TR;
+int BL;
+int BR;
 
 Serial port;
-
-//API mode
-//byte[] packet = {byte(0x7E)};
-//byte[] dataHex;
 
 void setup() {
   
   println(Serial.list());
-  port = new Serial(this, Serial.list()[2], 57600);
+  port = new Serial(this, Serial.list()[1], 57600);
   
   size(360, 200);
   
@@ -58,18 +53,26 @@ public void getUserInput() {
   x = xSlider.getValue();
   y = ySlider.getValue();
   //r = rSlider.getValue();
-  r = hat.getX() * 255.0;
+  r = hat.getX();
 }
 
 public void write() {
-  TL = str(int(x + y + r));
-  TR = str(int(x - y - r));
-  BL = str(int(x - y + r));
-  BR = str(int(x + y - r));
+  TL = int(x + y + r);
+  TR = int(x - y - r);
+  BL = int(x - y + r);
+  BR = int(x + y - r);
   
-  //hexArr = numHex(TL + "/" + TR + "/" + BL + "/" + BR);
-  //createPacket();
-  port.write(TL + "/" + TR + "/" + BL + "/" + BR + "@\n");
+  port.write(str(TL));
+  port.write(' ');
+  
+  port.write(str(TR));
+  port.write(' ');
+  
+  port.write(str(BL));
+  port.write(' ');
+  
+  port.write(str(BR));
+  port.write("\n");
 }
 
 void contSetup() {
@@ -102,21 +105,3 @@ void contSetup() {
   println("y tolerance: " + ySlider.getTolerance());
   //println("r tolerance: " + rSlider.getTolerance());
 }
-
-//void createPacket() {
-//  byte[] dataHex = numHex(TL + "/" + TR + "/" + BL + "/" + BR);
-  
-//}
-
-//byte[] numHex(String num) {
-//  String s = "";
-//  for (char c : num.toCharArray())
-//    s += hex(byte(c), 2);
-  
-//  int len = s.length();
-//    byte[] ret = new byte[len / 2];
-//    for (int i = 0; i < len; i = i + 2) {
-//        ret[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4) + Character.digit(s.charAt(i+1), 16));
-//    }
-//    return ret;
-//}
