@@ -69,7 +69,7 @@ public void write() {
   
   //hexArr = numHex(TL + "/" + TR + "/" + BL + "/" + BR);
   //createPacket();
-  port.write(TL + "/" + TR + "/" + BL + "/" + BR + "@\n");
+  port.write(TL + "/" + TR + "/" + BL + "/" + BR + "\n");
 }
 
 void contSetup() {
@@ -89,11 +89,11 @@ void contSetup() {
   xSlider.setMultiplier(255.0);
   ySlider.setMultiplier(-255.0);
   //rSlider.setMultiplier(255.0);
-  hat.setMultiplier(255.0);
+  //hat.setMultiplier(255.0);
   println("x multiplier: " + xSlider.getMultiplier());
   println("y multiplier: " + ySlider.getMultiplier());
   //println("r multiplier: " + rSlider.getMultiplier());
-  println("r multiplier: " + hat.getMultiplier());
+  //println("r multiplier: " + hat.getMultiplier());
   
   xSlider.setTolerance(deadzone);
   ySlider.setTolerance(deadzone);
