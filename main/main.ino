@@ -43,17 +43,17 @@ void loop() {
 void figure8(int t) {
   int x;
   for (x = 0; x <= 255; x++)
-    moveTime(x, findCurveY(x, -1), 0, t);
+    moveTime(x, findY(x, -1), 0, t);
   for (x = 255; x >= 0; x--)
-    moveTime(x, findCurveY(x, 1), 0, t);
+    moveTime(x, findY(x, 1), 0, t);
   for (x = 0; x >= -255; x--)
-    moveTime(x, findCurveY(x, -1), 0, t);
+    moveTime(x, findY(x, -1), 0, t);
   for (x = -255; x <= 0; x++)
-    moveTime(x, findCurveY(x, 1), 0, t);
+    moveTime(x, findY(x, 1), 0, t);
   delay(750);
 }
 
-int findCurveY(int x, int a) {
+int findY(int x, int a) {
   return (int)(a * sqrt(-1 * ((pow(x, 4) - (65025 * sq(x))) / 65025)));
 }
 
