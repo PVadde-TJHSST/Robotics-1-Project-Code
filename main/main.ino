@@ -1,5 +1,5 @@
-#include <I2CEncoder.h>
-#include <Wire.h>
+//#include <I2CEncoder.h>
+//#include <Wire.h>
 #include <Servo.h>
 #include <vexMotor.h>
 
@@ -36,25 +36,30 @@ void setup() {
 
 void loop() {
 
-  
+  figure8(10);
   
 }
 
-//void figure8Test(int t) {
-//  moveTime(0, 255, 0, t);
-//  moveTime(255, 0, 0, t);
-//  moveTime(0, -255, 0, t);
-//  moveTime(-255, 0, 0, t);
-//  moveTime(0, -255, 0, t);
-//  moveTime(255, 0, 0, t);
-//  moveTime(0, 255, 0, t);
-//  moveTime(-255, 0, 0, t);
-//}
+void figure8(int t) {
+  int x;
+  for (x = 0; x <= 255; x++)
+    moveTime(x, findCurveY(x, -1), 0, t);
+  for (x = 255; x >= 0; x--)
+    moveTime(x, findCurveY(x, 1), 0, t);
+  for (x = 0; x >= -255; x--)
+    moveTime(x, findCurveY(x, -1), 0, t);
+  for (x = -255; x <= 0; x++)
+    moveTime(x, findCurveY(x, 1), 0, t);
+  delay(750);
+}
+
+int findCurveY(int x, int a) {
+  return (int)(a * sqrt(-1 * ((pow(x, 4) - (65025 * sq(x))) / 65025)));
+}
 
 void moveTime(int x, int y, int r, int milli) {
   move(x, y, r);
   delay(milli);
-  halt();
 }
 
 void move(int x, int y, int r) {
