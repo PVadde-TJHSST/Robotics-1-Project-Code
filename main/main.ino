@@ -8,14 +8,10 @@ vexMotor topRight;
 vexMotor botLeft;
 vexMotor botRight;
 
-const int TLpin = 9; //White
-const int TRpin = 10; //Blue
-const int BLpin = 11; //Yellow
-const int BRpin = 13; //Pink
-
-const int minP = 1000;
-const int neuP = 1500;
-const int maxP = 2000;
+const int TLpin = 9;
+const int TRpin = 10;
+const int BLpin = 11;
+const int BRpin = 13;
 
 const int ThreshTL = 5;
 const int ThreshTR = 5;
@@ -23,7 +19,6 @@ const int ThreshBL = 5;
 const int ThreshBR = 5;
 
 void setup() {
-
   topLeft.attach(TLpin);
   topRight.attach(TRpin);
   botLeft.attach(BLpin);
@@ -32,29 +27,63 @@ void setup() {
   setMotorPulse();
   setMotorThreshold();
 
+  delay(5000);
 }
 
 void loop() {
-
   figure8(10);
-  
+  delay(500);
 }
 
+int x;
+int y;
 void figure8(int t) {
-  int x;
-  for (x = 0; x <= 255; x++)
-    moveTime(x, findY(x, -1), 0, t);
-  for (x = 255; x >= 0; x--)
-    moveTime(x, findY(x, 1), 0, t);
-  for (x = 0; x >= -255; x--)
-    moveTime(x, findY(x, -1), 0, t);
-  for (x = -255; x <= 0; x++)
-    moveTime(x, findY(x, 1), 0, t);
-  delay(750);
+  // int x;
+  // for (x = 0; x <= 255; x++)
+  //   moveTime(x, findY(x, -1), 0, t);
+  // for (x = 255; x >= 0; x--)
+  //   moveTime(x, findY(x, 1), 0, t);
+  // for (x = 0; x >= -255; x--)
+  //   moveTime(x, findY(x, -1), 0, t);
+  // for (x = -255; x <= 0; x++)
+  //   moveTime(x, findY(x, 1), 0, t);
+  // delay(750);
+
+  //Bottom Right
+  for (x = 255, y = findY(1); x >= 0; x--, y = findY(1))
+    moveTime(x, y, 0, t);
+  halt();
+  for (x = 0, y = findY(1); x >= -255; x--, y = findY(1))
+    moveTime(x, y, 0, t);
+  halt();
+
+  //Top Left
+  for (x = -255, y = findY(1); x <= 0; x++, y = findY(1))
+    moveTime(x, y, 0, t);
+  halt();
+  for (x = 0, y = findY(1); x <= 255; x++, y = findY(1))
+    moveTime(x, y, 0, t);
+  halt();
+
+  //Top Right
+  for (x = 255, y = findY(-1); x >= 0; x--, y = findY(-1))
+    moveTime(x, y, 0, t);
+  halt();
+  for (x = 0, y = findY(-1); x >= -255; x--, y = findY(-1))
+    moveTime(x, y, 0, t);
+  halt();
+
+  //Bottom Left
+  for (x = -255, y = findY(-1); x <= 0; x++, y = findY(-1))
+    moveTime(x, y, 0, t);
+  halt();
+  for (x = 0, y = findY(-1); x <= 255; x++, y = findY(-1))
+    moveTime(x, y, 0, t);
+  halt();
 }
 
-int findY(int x, int a) {
-  return (int)(a * sqrt(-1 * ((pow(x, 4) - (65025 * sq(x))) / 65025)));
+int findY(int a) {
+  return (int)(a * sqrt(65025 - sq(x)));
 }
 
 void moveTime(int x, int y, int r, int milli) {
@@ -84,19 +113,19 @@ void setMotorThreshold() {
 }
 
 void setMotorPulse() {
-  topLeft.setMinPulse(minP);
-  topLeft.setNeutralPulse(neuP);
-  topLeft.setMaxPulse(maxP);
+  topLeft.setMinPulse(1000);
+  topLeft.setNeutralPulse(1500);
+  topLeft.setMaxPulse(2000);
 
-  topRight.setMinPulse(minP);
-  topRight.setNeutralPulse(neuP);
-  topRight.setMaxPulse(maxP);
+  topRight.setMinPulse(1000);
+  topRight.setNeutralPulse(1500);
+  topRight.setMaxPulse(2000);
 
-  botLeft.setMinPulse(minP);
-  botLeft.setNeutralPulse(neuP);
-  botLeft.setMaxPulse(maxP);
+  botLeft.setMinPulse(1000);
+  botLeft.setNeutralPulse(1500);
+  botLeft.setMaxPulse(2000);
 
-  botRight.setMinPulse(minP);
-  botRight.setNeutralPulse(neuP);
-  botRight.setMaxPulse(maxP);
+  botRight.setMinPulse(1000);
+  botRight.setNeutralPulse(1500);
+  botRight.setMaxPulse(2000);
 }
