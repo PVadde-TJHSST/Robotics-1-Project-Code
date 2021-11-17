@@ -8,10 +8,10 @@ vexMotor topRight;
 vexMotor botLeft;
 vexMotor botRight;
 
-const int TLpin = 9;
-const int TRpin = 10;
-const int BLpin = 11;
-const int BRpin = 13;
+const int TLpin = 7;
+const int TRpin = 11;
+const int BLpin = 8;
+const int BRpin = 10;
 
 const int ThreshTL = 5;
 const int ThreshTR = 5;
@@ -31,8 +31,9 @@ void setup() {
 }
 
 void loop() {
-  figure8(10);
-  delay(500);
+  //figure8(1);
+  move(0, 255, 0);
+  //delay(500);
 }
 
 int x;
@@ -51,35 +52,35 @@ void figure8(int t) {
 
   //Bottom Right
   for (x = 255, y = findY(1); x >= 0; x--, y = findY(1))
-    moveTime(x, y, 0, t);
-  halt();
+    moveTime(2*x, y, 0, t);
+  //halt();
   for (x = 0, y = findY(1); x >= -255; x--, y = findY(1))
-    moveTime(x, y, 0, t);
-  halt();
+    moveTime(2*x, y, 0, t);
+  //halt();
 
   //Top Left
   for (x = -255, y = findY(1); x <= 0; x++, y = findY(1))
-    moveTime(x, y, 0, t);
-  halt();
+    moveTime(2*x, y, 0, t);
+  //halt();
   for (x = 0, y = findY(1); x <= 255; x++, y = findY(1))
-    moveTime(x, y, 0, t);
-  halt();
+    moveTime(2*x, y, 0, t);
+  //halt();
 
   //Top Right
   for (x = 255, y = findY(-1); x >= 0; x--, y = findY(-1))
-    moveTime(x, y, 0, t);
-  halt();
+    moveTime(2*x, y, 0, t);
+  //halt();
   for (x = 0, y = findY(-1); x >= -255; x--, y = findY(-1))
-    moveTime(x, y, 0, t);
-  halt();
+    moveTime(2*x, y, 0, t);
+  //halt();
 
   //Bottom Left
   for (x = -255, y = findY(-1); x <= 0; x++, y = findY(-1))
-    moveTime(x, y, 0, t);
-  halt();
+    moveTime(2*x, y, 0, t);
+  //halt();
   for (x = 0, y = findY(-1); x <= 255; x++, y = findY(-1))
-    moveTime(x, y, 0, t);
-  halt();
+    moveTime(2*x, y, 0, t);
+  //halt();
 }
 
 int findY(int a) {
