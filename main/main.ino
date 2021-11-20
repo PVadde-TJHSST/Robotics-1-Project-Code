@@ -1,5 +1,5 @@
-//#include <I2CEncoder.h>
-//#include <Wire.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BNO055.h>
 #include <Servo.h>
 #include <vexMotor.h>
 
@@ -13,10 +13,10 @@ const int TRpin = 11;
 const int BLpin = 8;
 const int BRpin = 10;
 
-const int ThreshTL = 5;
-const int ThreshTR = 5;
-const int ThreshBL = 5;
-const int ThreshBR = 5;
+const int Thresh = 5;
+
+#define BNO055_SAMPLERATE_DELAY_MS (100)
+
 
 void setup() {
   topLeft.attach(TLpin);
@@ -31,60 +31,7 @@ void setup() {
 }
 
 void loop() {
-  //figure8(1);
   move(0, 255, 0);
-  //delay(500);
-}
-
-int x;
-int y;
-void figure8(int t) {
-  // int x;
-  // for (x = 0; x <= 255; x++)
-  //   moveTime(x, findY(x, -1), 0, t);
-  // for (x = 255; x >= 0; x--)
-  //   moveTime(x, findY(x, 1), 0, t);
-  // for (x = 0; x >= -255; x--)
-  //   moveTime(x, findY(x, -1), 0, t);
-  // for (x = -255; x <= 0; x++)
-  //   moveTime(x, findY(x, 1), 0, t);
-  // delay(750);
-
-  //Bottom Right
-  for (x = 255, y = findY(1); x >= 0; x--, y = findY(1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-  for (x = 0, y = findY(1); x >= -255; x--, y = findY(1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-
-  //Top Left
-  for (x = -255, y = findY(1); x <= 0; x++, y = findY(1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-  for (x = 0, y = findY(1); x <= 255; x++, y = findY(1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-
-  //Top Right
-  for (x = 255, y = findY(-1); x >= 0; x--, y = findY(-1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-  for (x = 0, y = findY(-1); x >= -255; x--, y = findY(-1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-
-  //Bottom Left
-  for (x = -255, y = findY(-1); x <= 0; x++, y = findY(-1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-  for (x = 0, y = findY(-1); x <= 255; x++, y = findY(-1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-}
-
-int findY(int a) {
-  return (int)(a * sqrt(65025 - sq(x)));
 }
 
 void moveTime(int x, int y, int r, int milli) {
@@ -107,10 +54,10 @@ void halt() {
 }
 
 void setMotorThreshold() {
-  topLeft.setDeadBand(ThreshTL);
-  topRight.setDeadBand(ThreshTR);
-  botLeft.setDeadBand(ThreshBL);
-  botRight.setDeadBand(ThreshBR);
+  topLeft.setDeadBand(Thresh);
+  topRight.setDeadBand(Thresh);
+  botLeft.setDeadBand(Thresh);
+  botRight.setDeadBand(Thresh);
 }
 
 void setMotorPulse() {
