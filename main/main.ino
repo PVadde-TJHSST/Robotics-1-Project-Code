@@ -13,10 +13,10 @@ const int TRpin = 11;
 const int BLpin = 8;
 const int BRpin = 10;
 
-const int ThreshTL = 5;
-const int ThreshTR = 5;
-const int ThreshBL = 5;
-const int ThreshBR = 5;
+const int Thresh = 5;
+
+int c = 1;
+int val;
 
 void setup() {
   topLeft.attach(TLpin);
@@ -27,69 +27,39 @@ void setup() {
   setMotorPulse();
   setMotorThreshold();
 
+  pinMode(2, INPUT);
+  pinMode(12, OUTPUT);
+
   delay(5000);
 }
 
 void loop() {
-  //figure8(1);
-  move(0, 255, 0);
-  //delay(500);
-}
-
-int x;
-int y;
-void figure8(int t) {
-  // int x;
-  // for (x = 0; x <= 255; x++)
-  //   moveTime(x, findY(x, -1), 0, t);
-  // for (x = 255; x >= 0; x--)
-  //   moveTime(x, findY(x, 1), 0, t);
-  // for (x = 0; x >= -255; x--)
-  //   moveTime(x, findY(x, -1), 0, t);
-  // for (x = -255; x <= 0; x++)
-  //   moveTime(x, findY(x, 1), 0, t);
-  // delay(750);
-
-  //Bottom Right
-  for (x = 255, y = findY(1); x >= 0; x--, y = findY(1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-  for (x = 0, y = findY(1); x >= -255; x--, y = findY(1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-
-  //Top Left
-  for (x = -255, y = findY(1); x <= 0; x++, y = findY(1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-  for (x = 0, y = findY(1); x <= 255; x++, y = findY(1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-
-  //Top Right
-  for (x = 255, y = findY(-1); x >= 0; x--, y = findY(-1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-  for (x = 0, y = findY(-1); x >= -255; x--, y = findY(-1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-
-  //Bottom Left
-  for (x = -255, y = findY(-1); x <= 0; x++, y = findY(-1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-  for (x = 0, y = findY(-1); x <= 255; x++, y = findY(-1))
-    moveTime(2*x, y, 0, t);
-  //halt();
-}
-
-int findY(int a) {
-  return (int)(a * sqrt(65025 - sq(x)));
+  val = digitalRead(2);
+  if (val == 0) {
+    move(0, 255, 0);
+  } else if (val == 1) {
+    if (c == 3) {
+      digitalWrite(LED_BUILTIN, LOW);
+      digitalWrite(12, HIGH);
+      c = 1;
+      halt();
+      moveTime(0, -255, 0, 1000);
+      delay(3000);
+      digitalWrite(12, LOW);
+    } else {
+      digitalWrite(LED_BUILTIN, HIGH);
+      c++;
+      moveTime(0, -255, 0, 750);
+      delay(250);
+    }
+  }
+  
 }
 
 void moveTime(int x, int y, int r, int milli) {
   move(x, y, r);
   delay(milli);
+  halt();
 }
 
 void move(int x, int y, int r) {
@@ -107,10 +77,10 @@ void halt() {
 }
 
 void setMotorThreshold() {
-  topLeft.setDeadBand(ThreshTL);
-  topRight.setDeadBand(ThreshTR);
-  botLeft.setDeadBand(ThreshBL);
-  botRight.setDeadBand(ThreshBR);
+  topLeft.setDeadBand(Thresh);
+  topRight.setDeadBand(Thresh);
+  botLeft.setDeadBand(Thresh);
+  botRight.setDeadBand(Thresh);
 }
 
 void setMotorPulse() {
