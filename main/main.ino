@@ -15,8 +15,9 @@ const int BRpin = 10;
 
 const int Thresh = 5;
 
-#define BNO055_SAMPLERATE_DELAY_MS (100)
-Adafruit_BNO055 bno = Adafruit_BNO055(55);
+//#define BNO055_SAMPLERATE_DELAY_MS (100)
+Adafruit_BNO055 imu = Adafruit_BNO055(1234, 0x28);
+sensors_event_t event;
 
 void setup() {
   topLeft.attach(TLpin);
@@ -29,7 +30,7 @@ void setup() {
 
   Serial.begin(9600);
 
-  if(!bno.begin())
+  if(!imu.begin())
   {
     /* There was a problem detecting the BNO055 ... check your connections */
     Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
@@ -40,7 +41,7 @@ void setup() {
 }
 
 void loop() {
-  move(0, 255, 0);
+  moveTime(0, 255, 0, 1000);
 }
 
 void moveTime(int x, int y, int r, int milli) {
@@ -48,11 +49,32 @@ void moveTime(int x, int y, int r, int milli) {
   delay(milli);
 }
 
+float startHead;
 void move(int x, int y, int r) {
-  topLeft.write(x + y + r);
-  topRight.write(x - y - r);
-  botLeft.write(x - y + r);
-  botRight.write(x + y - r);
+  if (r != 0) {
+    topLeft.write(x + y - r);
+    topRight.write(x - y + r);
+    botLeft.write(x - y - r);
+    botRight.write(x + y + r);
+//  } else {
+//    topLeft.write(x + y - (-getHeading()+startHead));
+//    topRight.write(x - y + (-getHeading()+startHead));
+//    botLeft.write(x - y - (-getHeading()+startHead));
+//    botRight.write(x + y + (-getHeading()+startHead));
+//  }
+}
+
+void rotate(int r, float deg) {
+  startHead = getHeading();
+  if (deg > 0) {
+    while (getHeading() - 360 <= startHead + deg - 360)
+      move(0, 0, r);
+    halt();
+  } else {
+    while (getHeading() >= startHead + deg + 360)
+      move(0, 0, -r);
+    halt();
+  }
 }
 
 void halt() {
@@ -60,6 +82,16 @@ void halt() {
   topRight.write(0);
   botLeft.write(0);
   botRight.write(0);
+}
+
+//void resetImu() {
+//  
+//}
+
+float getHeading() {
+  imu.getEvent(&event);
+//  return event.orientation.azimuth;
+  return event.orientation.x;
 }
 
 void setMotorThreshold() {
