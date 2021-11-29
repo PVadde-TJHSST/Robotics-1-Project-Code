@@ -16,7 +16,7 @@ const int BRpin = 10;
 const int Thresh = 5;
 
 //#define BNO055_SAMPLERATE_DELAY_MS (100)
-Adafruit_BNO055 imu = Adafruit_BNO055(1234, 0x28);
+Adafruit_BNO055 bno = Adafruit_BNO055(1234, 0x28);
 sensors_event_t event;
 
 void setup() {
@@ -30,8 +30,7 @@ void setup() {
 
   Serial.begin(9600);
 
-  if(!imu.begin())
-  {
+  if(!bno.begin()) {
     /* There was a problem detecting the BNO055 ... check your connections */
     Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
     while(1);
@@ -56,12 +55,13 @@ void move(int x, int y, int r) {
     topRight.write(x - y + r);
     botLeft.write(x - y - r);
     botRight.write(x + y + r);
-//  } else {
-//    topLeft.write(x + y - (-getHeading()+startHead));
-//    topRight.write(x - y + (-getHeading()+startHead));
-//    botLeft.write(x - y - (-getHeading()+startHead));
-//    botRight.write(x + y + (-getHeading()+startHead));
-//  }
+  } else {
+    startHead = getHeading();
+    topLeft.write(x + y - (-getHeading()+startHead));
+    topRight.write(x - y + (-getHeading()+startHead));
+    botLeft.write(x - y - (-getHeading()+startHead));
+    botRight.write(x + y + (-getHeading()+startHead));
+  }
 }
 
 void rotate(int r, float deg) {
@@ -84,12 +84,8 @@ void halt() {
   botRight.write(0);
 }
 
-//void resetImu() {
-//  
-//}
-
 float getHeading() {
-  imu.getEvent(&event);
+  bno.getEvent(&event);
 //  return event.orientation.azimuth;
   return event.orientation.x;
 }
