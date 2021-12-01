@@ -36,27 +36,27 @@ void setup() {
 
 void loop() {
   //Digital
-  val = digitalRead(2);
-  if (val == 0) {
-    move(0, 255, 0);
-  } else if (val == 1) {
-    if (c == 3) {
-      digitalWrite(LED_BUILTIN, LOW);
-      digitalWrite(12, HIGH);
-      c = 1;
-      halt();
-      moveTime(0, -255, 0, 1000);
-      delay(3000);
-      moveTime(0, 0, -255, 500);
-      digitalWrite(12, LOW);
-    } else {
-      digitalWrite(LED_BUILTIN, HIGH);
-      c++;
-      moveTime(0, 0, -255, 500);
-      moveTime(0, -255, 0, 750);
-      delay(250);
-    }
-  }
+//  val = digitalRead(2);
+//  if (val == 0) {
+//    move(0, 255, 0);
+//  } else if (val == 1) {
+//    if (c == 3) {
+//      digitalWrite(LED_BUILTIN, LOW);
+//      digitalWrite(12, HIGH);
+//      c = 1;
+//      halt();
+//      moveTime(0, -255, 0, 1000);
+//      delay(3000);
+//      moveTime(0, 0, -255, 500);
+//      digitalWrite(12, LOW);
+//    } else {
+//      digitalWrite(LED_BUILTIN, HIGH);
+//      c++;
+//      moveTime(0, 0, -255, 500);
+//      moveTime(0, -255, 0, 750);
+//      delay(250);
+//    }
+//  }
 
 //  move(0, 127, 0);
 //  while (!digitalRead(2)) {}
@@ -64,10 +64,11 @@ void loop() {
 //  moveTime(0, 0, -127, 250);
 
   //Analog
-//  move(0, 0, 127);
-//  while (analogRead(A1) < 800) {}
-//  halt();
-//  moveTime(0, 255, 0, 750);
+  move(0, 0, 127);
+  while (analogRead(A1) < 600) {}
+  halt();
+  delay(500);
+  moveTime(0, 255, 0, 1500);
 }
 
 void moveTime(int x, int y, int r, int milli) {
