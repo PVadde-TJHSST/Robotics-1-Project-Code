@@ -120,26 +120,26 @@ void displayCalStatus(void)
 /**************************************************************************/
 void setup(void)
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println("Orientation Sensor Test"); Serial.println("");
 
-  /* Initialise the sensor */
-  if(!bno.begin())
-  {
-    /* There was a problem detecting the BNO055 ... check your connections */
-    Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
-    while(1);
-  }
-
-  delay(1000);
-
-  /* Display some basic information on this sensor */
-  displaySensorDetails();
-
-  /* Optional: Display current status */
-  displaySensorStatus();
-
-  bno.setExtCrystalUse(true);
+//  /* Initialise the sensor */
+//  if(!bno.begin())
+//  {
+//    /* There was a problem detecting the BNO055 ... check your connections */
+//    Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
+//    while(1);
+//  }
+//
+//  delay(1000);
+//
+//  /* Display some basic information on this sensor */
+//  displaySensorDetails();
+//
+//  /* Optional: Display current status */
+//  displaySensorStatus();
+//
+//  bno.setExtCrystalUse(true);
 }
 
 /**************************************************************************/
@@ -150,40 +150,40 @@ void setup(void)
 /**************************************************************************/
 void loop(void)
 {
-  /* Get a new sensor event */
-  sensors_event_t event;
-  bno.getEvent(&event);
-
-  /* Display the floating point data */
-  Serial.print("X: ");
-  Serial.print(event.orientation.x, 4);
-  Serial.print("\tY: ");
-  Serial.print(event.orientation.y, 4);
-  Serial.print("\tZ: ");
-  Serial.print(event.orientation.z, 4);
-
-//imu::Quaternion quat = bno.getQuat();
+//  /* Get a new sensor event */
+//  sensors_event_t event;
+//  bno.getEvent(&event);
 //
-///* Display the quat data */
-//Serial.print("qW: ");
-//Serial.print(quat.w(), 4);
-//Serial.print(" qX: ");
-//Serial.print(quat.y(), 4);
-//Serial.print(" qY: ");
-//Serial.print(quat.x(), 4);
-//Serial.print(" qZ: ");
-//Serial.print(quat.z(), 4);
-//Serial.println("");
-
-  /* Optional: Display calibration status */
-  displayCalStatus();
-
-  /* Optional: Display sensor status (debug only) */
-  //displaySensorStatus();
-
-  /* New line for the next sample */
-  Serial.println("");
-
-  /* Wait the specified delay before requesting nex data */
-  delay(BNO055_SAMPLERATE_DELAY_MS);
+//  /* Display the floating point data */
+//  Serial.print("X: ");
+//  Serial.print(event.orientation.x, 4);
+//  Serial.print("\tY: ");
+//  Serial.print(event.orientation.y, 4);
+//  Serial.print("\tZ: ");
+//  Serial.print(event.orientation.z, 4);
+//
+////imu::Quaternion quat = bno.getQuat();
+////
+/////* Display the quat data */
+////Serial.print("qW: ");
+////Serial.print(quat.w(), 4);
+////Serial.print(" qX: ");
+////Serial.print(quat.y(), 4);
+////Serial.print(" qY: ");
+////Serial.print(quat.x(), 4);
+////Serial.print(" qZ: ");
+////Serial.print(quat.z(), 4);
+////Serial.println("");
+//
+//  /* Optional: Display calibration status */
+//  displayCalStatus();
+//
+//  /* Optional: Display sensor status (debug only) */
+//  //displaySensorStatus();
+//
+//  /* New line for the next sample */
+//  Serial.println("");
+//
+//  /* Wait the specified delay before requesting nex data */
+//  delay(BNO055_SAMPLERATE_DELAY_MS);
 }

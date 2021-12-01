@@ -16,7 +16,7 @@ const int BRpin = 10;
 const int Thresh = 5;
 
 //#define BNO055_SAMPLERATE_DELAY_MS (100)
-Adafruit_BNO055 bno = Adafruit_BNO055(1234, 0x28);
+Adafruit_BNO055 bno = Adafruit_BNO055(55);
 sensors_event_t event;
 
 void setup() {
@@ -29,6 +29,7 @@ void setup() {
   setMotorThreshold();
 
   Serial.begin(9600);
+  Serial.println("test");
 
   if(!bno.begin()) {
     /* There was a problem detecting the BNO055 ... check your connections */
