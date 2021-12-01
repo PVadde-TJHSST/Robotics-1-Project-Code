@@ -29,11 +29,13 @@ void setup() {
 
   pinMode(2, INPUT);
   pinMode(12, OUTPUT);
+  pinMode(A1, OUTPUT);
 
   delay(5000);
 }
 
 void loop() {
+  //Digital
   val = digitalRead(2);
   if (val == 0) {
     move(0, 255, 0);
@@ -45,15 +47,27 @@ void loop() {
       halt();
       moveTime(0, -255, 0, 1000);
       delay(3000);
+      moveTime(0, 0, -255, 500);
       digitalWrite(12, LOW);
     } else {
       digitalWrite(LED_BUILTIN, HIGH);
       c++;
+      moveTime(0, 0, -255, 500);
       moveTime(0, -255, 0, 750);
       delay(250);
     }
   }
-  
+
+//  move(0, 127, 0);
+//  while (!digitalRead(2)) {}
+//  moveTime(0, -127, 0, 500);
+//  moveTime(0, 0, -127, 250);
+
+  //Analog
+//  move(0, 0, 127);
+//  while (analogRead(A1) < 800) {}
+//  halt();
+//  moveTime(0, 255, 0, 750);
 }
 
 void moveTime(int x, int y, int r, int milli) {
