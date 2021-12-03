@@ -49,10 +49,10 @@ void loop() {
 }
 
 void move(int x, int y, int r) {
-  topLeft.write(x + y + r);
-  topRight.write(x - y - r);
-  botLeft.write(x - y + r);
-  botRight.write(x + y - r);
+  topLeft.write(x + y - r);
+  topRight.write(x - y + r);
+  botLeft.write(x - y - r);
+  botRight.write(x + y + r);
 }
 
 void setMotors() {

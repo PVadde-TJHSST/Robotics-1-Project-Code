@@ -62,10 +62,10 @@ public void getUserInput() {
 }
 
 public void write() {
-  TL = str(int(x + y + r));
-  TR = str(int(x - y - r));
-  BL = str(int(x - y + r));
-  BR = str(int(x + y - r));
+  TL = str(int(x + y - r));
+  TR = str(int(x - y + r));
+  BL = str(int(x - y - r));
+  BR = str(int(x + y + r));
   
   //hexArr = numHex(TL + "/" + TR + "/" + BL + "/" + BR);
   //createPacket();

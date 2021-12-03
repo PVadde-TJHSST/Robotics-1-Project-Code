@@ -48,10 +48,10 @@ public void getUserInput() {
 }
 
 public void write() {
-  TL = int(x + y + r);
-  TR = int(x - y - r);
-  BL = int(x - y + r);
-  BR = int(x + y - r);
+  TL = int(x + y - r);
+  TR = int(x - y + r);
+  BL = int(x - y - r);
+  BR = int(x + y + r);
   
   port.write(TL + '/' + TR + '/' + BL + '/' + BR + '\n');
 }
