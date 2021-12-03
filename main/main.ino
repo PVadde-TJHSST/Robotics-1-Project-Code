@@ -29,7 +29,7 @@ void setup() {
 
   pinMode(2, INPUT);
   pinMode(12, OUTPUT);
-  pinMode(A1, OUTPUT);
+  pinMode(A0, OUTPUT);
 
   Serial.begin(9600);
 
@@ -66,12 +66,12 @@ void loop() {
 //  moveTime(0, 0, -127, 250);
 
   //Analog
-//  move(0, 0, 63);
-//  while (analogRead(1) < 600) {}
-//  halt();
-//  delay(500);
-//  moveTime(0, 255, 0, 1000);
-  Serial.println(analogRead(A1));
+  move(0, 0, 63);
+  while (analogRead(A0) <= 5) {}
+  halt();
+  delay(500);
+  moveTime(0, 255, 0, 1000);
+  //Serial.println(analogRead(A0));
 }
 
 void moveTime(int x, int y, int r, int milli) {
