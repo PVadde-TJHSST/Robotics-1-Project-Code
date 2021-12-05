@@ -1,11 +1,11 @@
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 #include <Printers.h>
 #include <XBee.h>
 
 XBee xbee = XBee();
 XBeeAddress64 addr64 = XBeeAddress64(0x0013A200, 0x41BE7880);
 
-SoftwareSerial sSerial(2, 3); // RX, TX
+//SoftwareSerial sSerial(2, 3); // RX, TX
 
 const byte numChars = 19;
 uint8_t payload[numChars];
@@ -17,8 +17,9 @@ char rc;
 
 void setup() {
   Serial.begin(57600);
-  sSerial.begin(57600);
-  xbee.setSerial(sSerial);
+  Serial1.begin(57600);
+  //sSerial.begin(57600);
+  xbee.setSerial(Serial1);
 }
 
 void loop() {

@@ -37,7 +37,7 @@ int BRP;
 void setup() {
   setMotors();
   Serial.begin(57600);
-  xbee.setSerial(Serial);
+  xbee.setSerial(Serial1);
 }
 
 void loop() {
