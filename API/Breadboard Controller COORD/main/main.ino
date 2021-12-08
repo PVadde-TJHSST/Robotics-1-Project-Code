@@ -37,7 +37,7 @@ void loop() {
   readIn();
   zbTx = ZBTxRequest(addr64, payload, sizeof(payload));
   xbee.send(zbTx);
-  delay(5);
+  //delay(5);
 }
 
 String motors;

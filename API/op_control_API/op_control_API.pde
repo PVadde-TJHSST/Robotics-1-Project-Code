@@ -3,7 +3,9 @@ import net.java.games.input.*;
 import org.gamecontrolplus.*;
 import org.gamecontrolplus.gui.*;
 import org.firmata.*;
+import cc.arduino.*;
 
+Arduino arduino;
 ControlDevice cont;
 ControlIO control;
 float x;
@@ -26,18 +28,22 @@ Serial port;
 
 void setup() {
   
-  println(Serial.list());
+  //println(Serial.list());
+  //println(Serial.list()[1]);
+  println();
+  println(Arduino.list());
+  println(Arduino.list()[0]);
   port = new Serial(this, Serial.list()[1], 57600);
   
   size(360, 200);
   
-  contSetup();
+  //contSetup();
    
 }
 
 void draw() {
-  getUserInput();
-  write();
+  //getUserInput();
+  //write();
 }
 
 public void getUserInput() {
@@ -65,10 +71,10 @@ void contSetup() {
     System.exit(-1);
   }
   
-  xSlider = cont.getSlider("Z Axis");
-  ySlider = cont.getSlider("Z Rotation");
+  xSlider = cont.getSlider("z");
+  ySlider = cont.getSlider("rz");
   //rSlider = cont.getSlider("X Axis");
-  hat = cont.getHat("cooliehat: Hat Switch");
+  hat = cont.getHat("cooliehat: pov");
   
   xSlider.setMultiplier(255.0);
   ySlider.setMultiplier(-255.0);

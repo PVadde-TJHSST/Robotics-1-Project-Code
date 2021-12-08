@@ -10,19 +10,12 @@ vexMotor topRight;
 vexMotor botLeft;
 vexMotor botRight;
 
-const int TLpin = 9; //White
-const int TRpin = 10; //Blue
-const int BLpin = 11; //Yellow
-const int BRpin = 13; //Pink
+const int TLpin = 7;
+const int TRpin = 11;
+const int BLpin = 8;
+const int BRpin = 10;
 
-const int minP = 1000;
-const int neuP = 1500;
-const int maxP = 2000;
-
-const int ThreshTL = 5;
-const int ThreshTR = 5;
-const int ThreshBL = 5;
-const int ThreshBR = 5;
+const int Thresh = 5;
 
 XBee xbee = XBee();
 ZBRxResponse rx = ZBRxResponse();
@@ -37,6 +30,7 @@ int BRP;
 void setup() {
   setMotors();
   Serial.begin(57600);
+  Serial1.begin(57600);
   xbee.setSerial(Serial1);
 }
 
@@ -61,26 +55,26 @@ void setMotors() {
   botLeft.attach(BLpin);
   botRight.attach(BRpin);
   
-  topLeft.setDeadBand(ThreshTL);
-  topRight.setDeadBand(ThreshTR);
-  botLeft.setDeadBand(ThreshBL);
-  botRight.setDeadBand(ThreshBR);
+  topLeft.setDeadBand(Thresh);
+  topRight.setDeadBand(Thresh);
+  botLeft.setDeadBand(Thresh);
+  botRight.setDeadBand(Thresh);
 
-  topLeft.setMinPulse(minP);
-  topLeft.setNeutralPulse(neuP);
-  topLeft.setMaxPulse(maxP);
+  topLeft.setMinPulse(1000);
+  topLeft.setNeutralPulse(1500);
+  topLeft.setMaxPulse(2000);
 
-  topRight.setMinPulse(minP);
-  topRight.setNeutralPulse(neuP);
-  topRight.setMaxPulse(maxP);
+  topRight.setMinPulse(1000);
+  topRight.setNeutralPulse(1500);
+  topRight.setMaxPulse(2000);
 
-  botLeft.setMinPulse(minP);
-  botLeft.setNeutralPulse(neuP);
-  botLeft.setMaxPulse(maxP);
+  botLeft.setMinPulse(1000);
+  botLeft.setNeutralPulse(1500);
+  botLeft.setMaxPulse(2000);
 
-  botRight.setMinPulse(minP);
-  botRight.setNeutralPulse(neuP);
-  botRight.setMaxPulse(maxP);
+  botRight.setMinPulse(1000);
+  botRight.setNeutralPulse(1500);
+  botRight.setMaxPulse(2000);
 }
 
 int i;
@@ -90,7 +84,7 @@ void readXBee() {
   xbee.readPacket();
   if (xbee.getResponse().isAvailable() && xbee.getResponse().getApiId() == ZB_RX_RESPONSE) {
     xbee.getResponse().getZBRxResponse(rx);
-    for (i = 0, c = 1; i < rx.getDataLength(); i++) {
+    for (i = 0, c = 1; i < rx.getDataLength() - 1; i++) {
       if ((char)rx.getData()[i] == '/') {
         if (c == 1)
           TLP = p.toInt();
