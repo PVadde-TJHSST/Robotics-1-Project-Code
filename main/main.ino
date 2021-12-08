@@ -65,13 +65,23 @@ void loop() {
 //  moveTime(0, -127, 0, 500);
 //  moveTime(0, 0, -127, 250);
 
-  //Analog
-  move(0, 0, 63);
-  while (analogRead(A0) <= 5) {}
-  halt();
-  delay(500);
-  moveTime(0, 255, 0, 1000);
-  //Serial.println(analogRead(A0));
+  int maxPValue = 0;
+  int maxPValueTime = 0;
+  int startTime = millis()
+  // Analog
+  // Move in circle, recording highest photoresistor value
+  moveTime(0, 0, 50)
+  if (analogRead(A0) > maxPValue) {
+  maxPValue = analogRead(A0);
+  maxPValueTime = millis() - startTime;
+  }
+  moveTime(0, 0, maxPValueTime)
+  /* move(0, 0, 63); */
+  /* while (analogRead(A0) <= 5) {} */
+  /* halt(); */
+  /* delay(500); */
+  /* moveTime(0, 255, 0, 1000); */
+  Serial.println(analogRead(A0));
 }
 
 void moveTime(int x, int y, int r, int milli) {
