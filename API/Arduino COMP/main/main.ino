@@ -3,7 +3,7 @@
 #include <XBee.h>
 
 XBee xbee = XBee();
-XBeeAddress64 addr64 = XBeeAddress64(0x0013A200, 0x41BE7880);
+XBeeAddress64 addr64 = XBeeAddress64(0x0013A200, 0x41B79B35);
 
 //SoftwareSerial sSerial(2, 3); // RX, TX
 
