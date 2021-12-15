@@ -1,5 +1,5 @@
-#include <Printers.h>
-#include <XBee.h>
+// #include <Printers.h>
+// #include <XBee.h>
 //#include <I2CEncoder.h>
 //#include <Wire.h>
 #include <Servo.h>
@@ -17,29 +17,21 @@ const int BRpin = 10;
 
 const int Thresh = 5;
 
-XBee xbee = XBee();
-ZBRxResponse rx = ZBRxResponse();
-#define MAX_FRAME_DATA_SIZE 50
-Rx16Response rx16 = Rx16Response();
-
-int TLP;
-int TRP;
-int BLP;;
-int BRP;
+// XBee xbee = XBee();
+// ZBRxResponse rx = ZBRxResponse();
+// #define MAX_FRAME_DATA_SIZE 50
+// Rx16Response rx16 = Rx16Response();
 
 void setup() {
   setMotors();
-  Serial.begin(57600);
+//   Serial.begin(57600);
   Serial1.begin(57600);
-  xbee.setSerial(Serial1);
+//   xbee.setSerial(Serial1);
 }
 
 void loop() {
   readXBee();
-  topLeft.write(TLP);
-  topRight.write(TRP);
-  botLeft.write(BLP);
-  botRight.write(BRP);
+  move(x, y, 0);
 }
 
 void move(int x, int y, int r) {
@@ -104,21 +96,22 @@ void readXBee() {
 //     }
 //   }
 
-    //Simple
-    xbee.readPacket();
-    if (xbee.getResponse().isAvailable() && xbee.getResponse().getApiId() == ZB_RX_RESPONSE) {
-        xbee.getResponse().getZBRxResponse(rx);
-        if ((char)rx.getData()[0] == 'L')
-            x -= 255;
-        if ((char)rx.getData()[0] == 'R')
-            x += 255;
-        if ((char)rx.getData()[0] == 'U')
-            y += 255;
-        if ((char)rx.getData()[0] == 'D')
-            y -= 255;
+    x = 0;
+    y = 0;
+    if (Serial1.available() > 0) {
+        p = Serial1.readStringUntil('\n');
+        if (p.length() >= 4) {
+
+            int len = p.length();
+            if ((int)p.charAt(len - 4) == 1)
+                x -= 255;
+            if ((int)p.charAt(len - 3) == 1)
+                x += 255;
+            if ((int)p.charAt(len - 2) == 1)
+                y += 255;
+            if ((int)p.charAt(len - 1) == 1)
+                y -= 255;
+
+        }
     }
-    TLP = (x + y);
-    TRP = (x - y);
-    BLP = (x - y);
-    BRP = (x + y);
 }
