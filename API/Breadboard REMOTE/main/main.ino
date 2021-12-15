@@ -102,14 +102,13 @@ void readXBee() {
         p = Serial1.readStringUntil('\n');
         if (p.length() >= 4) {
 
-            int len = p.length();
-            if ((int)p.charAt(len - 4) == 1)
+            if (p.charAt(p.length() - 4) == '1')
                 x -= 255;
-            if ((int)p.charAt(len - 3) == 1)
+            if (p.charAt(p.length() - 3) == '1')
                 x += 255;
-            if ((int)p.charAt(len - 2) == 1)
+            if (p.charAt(p.length() - 2) == '1')
                 y += 255;
-            if ((int)p.charAt(len - 1) == 1)
+            if (p.charAt(p.length() - 1) == '1')
                 y -= 255;
 
         }
