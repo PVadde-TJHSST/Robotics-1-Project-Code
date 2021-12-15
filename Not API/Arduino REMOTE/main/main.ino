@@ -1,5 +1,5 @@
-#include <Printers.h>
-#include <XBee.h>
+// #include <Printers.h>
+// #include <XBee.h>
 //#include <I2CEncoder.h>
 //#include <Wire.h>
 #include <Servo.h>
@@ -17,10 +17,10 @@ const int BRpin = 10;
 
 const int Thresh = 5;
 
-XBee xbee = XBee();
-ZBRxResponse rx = ZBRxResponse();
-#define MAX_FRAME_DATA_SIZE 50
-Rx16Response rx16 = Rx16Response();
+// XBee xbee = XBee();
+// ZBRxResponse rx = ZBRxResponse();
+// #define MAX_FRAME_DATA_SIZE 50
+// Rx16Response rx16 = Rx16Response();
 
 int TLP;
 int TRP;
@@ -29,9 +29,9 @@ int BRP;
 
 void setup() {
   setMotors();
-  Serial.begin(57600);
+  // Serial.begin(57600);
   Serial1.begin(57600);
-  xbee.setSerial(Serial1);
+  // xbee.setSerial(Serial1);
 }
 
 void loop() {
@@ -77,28 +77,29 @@ void setMotors() {
   botRight.setMaxPulse(2000);
 }
 
-int i;
-int c;
+// int i;
+// int c;
 String p = "";
 void readXBee() {
-  xbee.readPacket();
-  if (xbee.getResponse().isAvailable() && xbee.getResponse().getApiId() == ZB_RX_RESPONSE) {
-    xbee.getResponse().getZBRxResponse(rx);
-    for (i = 0, c = 1; i < rx.getDataLength() - 1; i++) {
-      if ((char)rx.getData()[i] == '/') {
-        if (c == 1)
-          TLP = p.toInt();
-        else if (c == 2)
-          TRP = p.toInt();
-        else if (c == 3)
-          BLP = p.toInt();
-        else if (c == 4)
-          BRP = p.toInt();
-        p = "";
-        c++;
-      } else {
-        p += (char)rx.getData()[i];
-      }
-    }
-  }
+  // xbee.readPacket();
+  // if (xbee.getResponse().isAvailable() && xbee.getResponse().getApiId() == ZB_RX_RESPONSE) {
+  //   xbee.getResponse().getZBRxResponse(rx);
+  //   for (i = 0, c = 1; i < rx.getDataLength() - 1; i++) {
+  //     if ((char)rx.getData()[i] == '/') {
+  //       if (c == 1)
+  //         TLP = p.toInt();
+  //       else if (c == 2)
+  //         TRP = p.toInt();
+  //       else if (c == 3)
+  //         BLP = p.toInt();
+  //       else if (c == 4)
+  //         BRP = p.toInt();
+  //       p = "";
+  //       c++;
+  //     } else {
+  //       p += (char)rx.getData()[i];
+  //     }
+  //   }
+  // }
+  p = Serial1.readStringUntil('\n');
 }
