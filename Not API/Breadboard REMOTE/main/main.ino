@@ -38,8 +38,8 @@ void loop() {
 
 void move(int x, int y, int r) {
   topLeft.write(x + y - r);
-  topRight.write(x - y + r);
-  botLeft.write(x - y - r);
+  topRight.write(x - y - r);
+  botLeft.write(x - y + r);
   botRight.write(x + y + r);
 }
 
@@ -111,13 +111,15 @@ void readXBee() {
           if (p.length() >= 5) {
   
               if (p.charAt(p.length() - 5) == '1' && p.charAt(p.length() - 4) == '1') {
-                move(0, 0, 255);
-                delay(100);
+                move(0, 0, 127);
+                delay(10);
                 halt();
                 break;
-              } else if (p.charAt(p.length() - 3) == '1' && p.charAt(p.length() - 2) == '1') {
-                move(0, 0, -255);
-                delay(100);
+              } 
+              
+              if (p.charAt(p.length() - 3) == '1' && p.charAt(p.length() - 2) == '1') {
+                move(0, 0, -127);
+                delay(10);
                 halt();
                 break;
               }
