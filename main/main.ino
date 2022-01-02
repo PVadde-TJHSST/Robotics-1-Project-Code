@@ -16,7 +16,7 @@ const int BRpin = 10;
 const int Thresh = 5;
 
 //#define BNO055_SAMPLERATE_DELAY_MS (100)
-Adafruit_BNO055 bno = Adafruit_BNO055(55);
+Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28);
 sensors_event_t event;
 
 void setup() {
@@ -28,7 +28,7 @@ void setup() {
   setMotorPulse();
   setMotorThreshold();
 
-  Serial.begin(9600);
+  Serial.begin(57600);
   Serial.println("test");
 
   if(!bno.begin()) {
@@ -49,7 +49,6 @@ void moveTime(int x, int y, int r, int milli) {
   delay(milli);
 }
 
-float startHead;
 void move(int x, int y, int r) {
   if (r != 0) {
     topLeft.write(x + y - r);
@@ -57,7 +56,7 @@ void move(int x, int y, int r) {
     botLeft.write(x - y - r);
     botRight.write(x + y + r);
   } else {
-    startHead = getHeading();
+    float startHead = getHeading();
     topLeft.write(x + y - (-getHeading()+startHead));
     topRight.write(x - y + (-getHeading()+startHead));
     botLeft.write(x - y - (-getHeading()+startHead));
@@ -66,7 +65,7 @@ void move(int x, int y, int r) {
 }
 
 void rotate(int r, float deg) {
-  startHead = getHeading();
+  float startHead = getHeading();
   if (deg > 0) {
     while (getHeading() - 360 <= startHead + deg - 360)
       move(0, 0, r);
