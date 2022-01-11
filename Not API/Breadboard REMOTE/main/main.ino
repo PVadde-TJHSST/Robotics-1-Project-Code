@@ -4,11 +4,16 @@
 //#include <Wire.h>
 #include <Servo.h>
 #include <vexMotor.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BNO055.h>
 
 vexMotor topLeft;
 vexMotor topRight;
 vexMotor botLeft;
 vexMotor botRight;
+
+Adafruit_BNO055 bno = Adafruit_BNO055(55, 0x28);
+sensors_event_t event;
 
 const int TLpin = 7;
 const int TRpin = 11;
@@ -18,6 +23,7 @@ const int BRpin = 10;
 const int Thresh = 5;
 int x = 0;
 int y = 0;
+float head;
 
 // XBee xbee = XBee();
 // ZBRxResponse rx = ZBRxResponse();
@@ -29,6 +35,7 @@ void setup() {
 //  Serial.begin(57600);
   Serial1.begin(57600);
 //   xbee.setSerial(Serial1);
+  head = getHeading();
 }
 
 void loop() {
@@ -37,10 +44,21 @@ void loop() {
 }
 
 void move(int x, int y, int r) {
-  topLeft.write(x + y - r);
-  topRight.write(x - y - r);
-  botLeft.write(x - y + r);
-  botRight.write(x + y + r);
+  topLeft.write(x + y - (-getHeading() + head + r));
+  topRight.write(x - y - (-getHeading() + head + r));
+  botLeft.write(x - y + (-getHeading() + head + r));
+  botRight.write(x + y + (-getHeading() + head + r));
+}
+
+void rotate(float degLeft, int power) {
+  if (degLeft > 0)
+    while (getHeading() < degLeft)
+      move(0, 0, power);
+  else
+    while (getHeading() > degLeft)
+      move(0, 0, -power);
+  halt();
+  head = getHeading();
 }
 
 void halt() {
@@ -78,6 +96,12 @@ void setMotors() {
   botRight.setMaxPulse(2000);
 }
 
+float getHeading() {
+  bno.getEvent(&event);
+//  return event.orientation.azimuth;
+  return event.orientation.x;
+}
+
 // int i;
 // int c;
 String p;
@@ -105,25 +129,14 @@ void readXBee() {
 
     x = 0;
     y = 0;
-    for(int i = 0; i < 1; i++) {
-      if (Serial1.available() > 0) {
-          p = Serial1.readStringUntil('\n');
-          if (p.length() >= 5) {
-  
-              if (p.charAt(p.length() - 5) == '1' && p.charAt(p.length() - 4) == '1') {
-                move(0, 0, 127);
-                delay(10);
-                halt();
-                break;
-              } 
-              
-              if (p.charAt(p.length() - 3) == '1' && p.charAt(p.length() - 2) == '1') {
-                move(0, 0, -127);
-                delay(10);
-                halt();
-                break;
-              }
-              
+    if (Serial1.available() > 0) {
+        p = Serial1.readStringUntil('\n');
+        if (p.length() >= 5) {
+            if (p.charAt(p.length() - 5) == '1' && p.charAt(p.length() - 4) == '1')
+              rotate(45, 127);
+            else if (p.charAt(p.length() - 3) == '1' && p.charAt(p.length() - 2) == '1')
+              rotate(-45, 127);
+            else {
               if (p.charAt(p.length() - 5) == '1')
                   x -= 255;
               if (p.charAt(p.length() - 4) == '1')
@@ -132,8 +145,7 @@ void readXBee() {
                   y += 255;
               if (p.charAt(p.length() - 2) == '1')
                   y -= 255;
-  
-          }
-      }
-   }
+            }
+        }
+    }
 }

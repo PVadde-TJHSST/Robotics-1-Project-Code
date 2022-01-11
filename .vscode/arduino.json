@@ -1,6 +1,5 @@
 {
     "board": "arduino:avr:leonardo",
     "port": "/dev/cu.usbmodem2101",
-    "sketch": "API/Arduino COMP/main/main.ino",
-    "programmer": "arduino:avrisp"
+    "sketch": "Not API\\Breadboard REMOTE\\main\\main.ino"
 }
